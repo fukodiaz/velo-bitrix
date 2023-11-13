@@ -1,7 +1,8 @@
 <?
 require($_SERVER["DOCUMENT_ROOT"]."/bitrix/header.php");
-$APPLICATION->SetTitle("Velo Shop");
+$APPLICATION->SetTitle("Калькулятор");
 ?>
 
-<div>Some info</div>
+Text here....
+
 <?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
