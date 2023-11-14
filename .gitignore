@@ -54,7 +54,6 @@ AI-BOLIT-*
 
 # core
 bitrix/*
-bitrix/
 !bitrix/license_key.php
 !bitrix/templates/
 !bitrix/components/
