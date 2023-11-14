@@ -1,4 +1,5 @@
 <?if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();?>
+	</section>
 		<div class="footer">
 			<div class="container wrap">
 				<div class="logo2">

@@ -92,3 +92,4 @@
 			<div class="clearfix"></div>
 		</div>
 	</div>	
+	<section class="mainBox">

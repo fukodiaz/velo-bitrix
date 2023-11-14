@@ -1,5 +1,6 @@
 <?php
 	const DEFAULT_TEMPLATE_PATH = '/local/templates/.default';
+	const DEFAULT_TEMPLATE_PATH_IMG = '/local/templates/main_velo';
 
 	function debug($data) {
 		echo "<pre>" . print_r($data, 1) . "</pre>";

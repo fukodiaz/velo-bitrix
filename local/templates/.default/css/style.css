@@ -2314,14 +2314,29 @@ a.order{
 
 	.logo {
 		position: relative;
+		width: 120px;
 		transform: translateY(-4px);
 	}
 }
 
-@media (min-width: 420px) {
+@media (max-width: 420px) {
 	.logo {
-		min-width: 120px;
+		transform: translateY(-6px);
 	}
+
+	.logo a {
+		font-size: 17px !important;
+	}
+}
+
+
+.banner-bg1 {
+	min-height: unset !important;
+}
+
+.logo {
+	min-width: 115px;
+	font-size: 17px;
 }
 
 label.mobile_menu {
