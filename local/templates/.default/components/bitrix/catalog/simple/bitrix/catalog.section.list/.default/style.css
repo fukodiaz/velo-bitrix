@@ -1,0 +1,76 @@
+.cats-list{
+    margin: 20px 0;
+}
+.cats-list h1{
+    color: #00405d;
+}
+.cats-list li{
+    float: left;
+    margin-right: 20px;
+    list-style: none;
+}
+.cats-list .img{
+    position: relative;
+    display: block;
+    overflow: hidden;
+    margin: 0 auto;
+    width: 78px;
+    height: 78px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    background-color: #fff;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.cats-list .img:hover{
+    box-shadow: 0 0 0 2px rgba(0,0,0,.2);
+}
+
+.cats-list h2 a{
+    font-size: 14px;
+    color: #00405d;
+}
+.cats-list h2 a:hover{
+    color: red;
+}
+
+.box-section-list {
+	box-sizing: border-box;
+}
+
+@media (max-width: 420px){ 
+	.row.box-section-list {
+		padding-top: 30px;
+		margin-left: 3px;
+	}
+}
+
+@media (min-width: 420px){ 
+	.row.box-section-list {
+		padding-top: 32px;
+		margin-left: 3px;
+	}
+}
+
+@media (min-width: 640px){ 
+	.row.box-section-list {
+		padding-top: 35px;
+		margin-left: 8px;
+	}
+}
+
+@media (min-width: 768px){ 
+	.row.box-section-list {
+		padding-top: 42px;
+		margin-left: 11px;
+	}
+}
+
+@media (min-width: 1024px){ 
+	.row.box-section-list {
+		padding-top: 51px;
+		margin-left: 13px;
+	}
+}

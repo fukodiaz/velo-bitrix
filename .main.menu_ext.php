@@ -1,6 +1,7 @@
 <?php
 	if(!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 	global $APPLICATION;
+
 	$arMenuLinksExt = $APPLICATION -> IncludeComponent(
 		'bitrix:menu.sections',
 		'',
@@ -13,7 +14,7 @@
 			'IBLOCK_ID' => '3',
 			'DEPTH_LEVEL' => '2',
 			'CACHE_TYPE' => 'A',
-			"CACHE_TIME" => '3600'
+			"CACHE_TIME" => '3600',
 		]
 	);
 
