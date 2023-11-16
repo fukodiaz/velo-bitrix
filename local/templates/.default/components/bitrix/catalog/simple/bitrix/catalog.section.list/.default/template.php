@@ -37,8 +37,10 @@ $this->setFrameMode(true);
 
             echo "\n",str_repeat("\t", $arSection["DEPTH_LEVEL"]-$TOP_DEPTH);
             ?>
-            <li id="<?=$this->GetEditAreaId($arSection['ID']);?>">
-                <a href="<?=$arSection["SECTION_PAGE_URL"]?>" class="img" style="background-image: url('<?=$arSection['ALT_PICTURE']?>')"></a>
+            <li id="<?=$this->GetEditAreaId($arSection['ID']);?>" class='item-section-list'>
+                <a href="<?=$arSection["SECTION_PAGE_URL"]?>" class="img" 
+					 style="background-image: url('<?=$arSection['ALT_PICTURE']?>')"
+					 ></a>
 
                 <h2>
                     <a href="<?=$arSection["SECTION_PAGE_URL"]?>">
