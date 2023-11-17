@@ -1,6 +1,7 @@
 .bx-filter {
 	width: 100%;
 	min-width: 220px;
+	max-width: 294px;
 	font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 	margin-bottom: 20px;
 }

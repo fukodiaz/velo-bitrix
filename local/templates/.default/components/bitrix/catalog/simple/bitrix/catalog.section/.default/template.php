@@ -2,13 +2,12 @@
 $this->setFrameMode(true);
 ?>
 
-<div class="row">
-    <div class="col-md-3">
+<div class="row box-catalog-section">
+    <div class='container-smart-filter'>
         <?php $APPLICATION->ShowViewContent('aside_filter'); ?>
     </div>
-    <div class="col-md-9">
-        <div class="row products">
-
+    <div class='container-products'>
+		<div class='inner-box-products'>
 		  <?php /*
             <div class="col-md-12">
                 <div class="mens-toolbar">
@@ -69,24 +68,27 @@ $this->setFrameMode(true);
                 }
                 ?>
 
-                <div class="col-sm-4">
+                <div class="cart-goods">
                     <div class="item-product" id="<?=$this->GetEditAreaId($arElement['ID']);?>">
 					 			<!-- preloader -->
 								<div class="loader">
 									<img src="/local/templates/pakhi_main/images/loader.gif">
 								</div>
 
-                        <div class="view1 view-fifth1">
+                        <!-- <div class="view1 view-fifth1"> -->
                             <div class="top_box">
                                 <h3 class="m_1"><?=$arElement["NAME"]?></h3>
 										  <?php if (!empty($model = $arElement["DISPLAY_PROPERTIES"]['MODEL'])): ?>
                                 	<p class="m_2"><?=$model['DISPLAY_VALUE']?></p>
 										  <?php endif;?>
-                                <a href="<?=$arElement["DETAIL_PAGE_URL"]?>">
+                                <a href="<?=$arElement["DETAIL_PAGE_URL"]?>"
+										  		class='link-img-product'>
                                     <div class="grid_img">
-                                        <div class="css3"><img src="<?=$arElement["PREVIEW_PICTURE"]["SRC"]?>" alt="<?=$arElement["NAME"]?>"></div>
+                                       <div class="css3">
+														<img src="<?=$arElement["PREVIEW_PICTURE"]["SRC"]?>" alt="<?=$arElement["NAME"]?>" class='img-product'>
+													</div>
                                         <div class="mask1">
-                                            <div class="info">Quick View</div>
+                                            <div class="add-cart">Подробнее</div>
                                         </div>
                                     </div>
                                 </a>
@@ -294,7 +296,7 @@ while($res = $result->fetch())
                                     <?php endif; ?>
                                 </div>
                             </div>
-                        </div>
+                        <!-- </div> -->
 
                         <div class="clear"></div>
                     </div>
@@ -305,5 +307,5 @@ while($res = $result->fetch())
 		  <?
 	 	echo $arResult["NAV_STRING"];
 	 ?>
-    </div>
+	</div>
 </div>

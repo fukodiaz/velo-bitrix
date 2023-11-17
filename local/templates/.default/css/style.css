@@ -768,7 +768,7 @@ margin-bottom: 2em;
 	font-weight:400;
 	margin-top:5px;
 }
-a.add-cart{
+a.add-cart {
 	background:#000;
 	color:#fcff19;
 	padding:5px 1em;
@@ -781,7 +781,24 @@ a.add-cart{
     left: 21%;
 	display:none;
 }
-a.add-cart:hover{
+
+.mask1 .add-cart {
+	background:#572529b3;
+	color:#f2f2f2;
+	padding:5px 1em;
+	font-size:1em;
+	display:inline-block;
+	margin-right:1em;
+	font-weight:500;
+	position:absolute;
+	top: 36%;
+    left: 50%;
+	 transform: translateX(-50%);
+	display:none;
+	border-radius: 3px;
+}
+
+a.add-cart:hover {
 	
 }
 a.qck{
