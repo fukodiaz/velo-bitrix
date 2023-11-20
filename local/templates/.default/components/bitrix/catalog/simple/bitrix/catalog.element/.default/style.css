@@ -1,3 +1,111 @@
+.box-catalog-element {
+	margin-bottom: 64px;
+	width: 100%;
+	transform: translateY(34px);
+}
+
+.inner-box-catalog-element {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+	width: 100%;
+}
+
+.box-img-cat-el {
+	max-width: 320px;
+	min-width: 320px;
+	min-height: 200px;
+	box-sizing: border-box;
+	/* padding-left: 10px; */
+}
+
+.box-img-cat-el ul {
+	position: relative;
+	z-index: 5000;
+	transform: translateX(10px);
+}
+
+
+.et-velo-img {
+	border-radius: 3px;
+}
+
+.box-cat-el-props {
+	margin-left: 20px;
+	flex-grow: 1;
+}
+
+.etalage li {
+	position: absolute;
+}
+
+.etalage {
+	direction: ltr;
+}
+
+.etalage_magnifier {
+	left: 0 !important;
+}
+
+.etalage_zoom_area {
+	/* position: relative !important; */
+	z-index: 3000 !important;
+	border: 2px solid rgba(253, 89, 71, 0.8);
+	border-radius: 15%;
+}
+
+
+.el-catal-name {
+	margin-bottom: 10px;
+	font-size: 19px;
+	opacity: 0.9;
+	text-transform: uppercase;
+}
+
+.box-els-cat-props {
+	padding-top: 3px;
+	margin-bottom: 19px;
+}
+
+.el-catal-props {
+	font-size: 15px;
+	line-height: 1.2;
+	margin-bottom: 3px;
+}
+
+.el-catal-props b {
+	padding-right: 3px;
+	color: #492326b3;
+}
+
+.box-cat-el-props .price .price_value {
+	display: inline-block;
+	margin-bottom: 3px;
+	font-size: 15px;
+	color: #fd9f39;
+}
+
+.box-el-catal-descrip {
+	padding-top: 11px;
+}
+
+.box-el-catal-descrip .single-bottom1 h6 {
+	padding-left: 6px;
+}
+
+.box-el-catal-descrip .single-bottom1 p {
+	transform: translateY(-2px);
+}
+
+.input-group .form-control:first-child {
+	min-width: 17px;
+}
+
+.input-group.col-xs-3 {
+	min-width: 125px;
+}
+
 .color-props{
 	list-style: none;
 	margin: 10px 0;
@@ -51,4 +159,56 @@
 	left: 50%;
 	top: 50%;
 	margin: -32px 0 0 -32px;
+}
+
+.btn.btn-default,
+.input-group .form-control {
+	border: 1px solid #893F45B3;
+	color: #492326b3;
+}
+
+.btn.btn-default:hover {
+	background-color: rgba(240, 191, 142, .4);
+}
+
+
+@media(max-width: 420px) { 
+	.etalage_zoom_area {
+		display: none !important;
+	}
+}
+
+@media(min-width: 420px) and (max-width:768px) {
+	.etalage_zoom_area {
+		top: 200px !important;
+		left: 0 !important;
+	}
+}
+
+@media (min-width:640px) {
+	.inner-box-catalog-element {
+		flex-direction: row;
+	}
+}
+
+@media (min-width: 768px) { 
+	.box-catalog-element {
+		margin-bottom: 73px;
+	}
+
+	.box-el-catal-descrip .single-bottom1 p {
+		padding-top: 11px;
+	}
+}
+
+
+@media (min-width: 1200px) {
+	.box-catalog-element {
+		margin: 0 auto;
+		margin-bottom: 78px;
+		width: 1170px;
+		transform: translateY(66px);
+	}
+
+	
 }

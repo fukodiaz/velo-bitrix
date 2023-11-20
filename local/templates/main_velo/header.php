@@ -19,9 +19,11 @@
 			Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . "/js/jquery.min.js");
 			Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . "/js/move-top.js");
 			Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . "/js/easing.js");
-			Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . "/js/responsiveslides.min.js");
 			Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . "/js/jquery.easydropdown.js");
+			Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . "/js/responsiveslides.min.js");
+			Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . "/js/jquery.flexisel.js");
 			Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . "/js/scripts.js");
+			Asset::getInstance()->addJs(DEFAULT_TEMPLATE_PATH . "/js/jquery.etalage.min.js");
 
 			Asset::getInstance()->addString('<meta name="viewport" content="width=device-width, initial-scale=1">');
 			Asset::getInstance()->addString('<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />');

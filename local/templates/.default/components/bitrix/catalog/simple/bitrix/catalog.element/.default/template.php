@@ -8,200 +8,223 @@ $this->setFrameMode(true);
 	console.log(path);
 </script>
 
+<script>
+	jQuery(document).ready(function($){
 
-<div class="row">
-	<div class="col-md-4">
-		<ul id="etalage">
-			<!-- detail picture -->
-			<li>
-				<img class="etalage_thumb_image img-responsive"
-						src="<?=$arResult['DETAIL_PICTURE']['SRC']?>"
-						alt="<?=$arResult['NAME']?>">
-				<img class="etalage_source_image img-responsive"
-						src="<?=$arResult['DETAIL_PICTURE']['SRC']?>"
-				>
-				<!-- src="/local/templates/pakhi_main/images/d1.jpg" -->
-			</li>
+		$('#etalage').etalage({
+			thumb_image_width: 300,
+			thumb_image_height: 'auto',
+			source_image_width: 417,
+			source_image_height: 'auto', 
+			// show_hint: true,
+			click_callback: function(image_anchor, instance_id){
+				alert('Callback example:\nYou clicked on an image with the anchor: "'+image_anchor+'"\n(in Etalage instance: "'+instance_id+'")');
+			}
+		});
 
-			<!-- extra-pictures -->
-			<?if (!empty($arResult['MORE_PHOTO'])): ?>
-				<? foreach($arResult['MORE_PHOTO'] as $photo): ?>
-					<li>
-						<img class="etalage_thumb_image img-responsive"
-								src="<?=$photo['SRC']?>"
-								alt="">
-						<img class="etalage_source_image img-responsive"
-								src="<?=$photo['SRC']?>"
-						>
-						<!-- src="/local/templates/pakhi_main/images/d1.jpg" -->
-					</li>
-				<?endforeach;?>
-			<?endif;?>
-		</ul>
-		<div class="clearfix"></div>
-	</div>
+	});
+</script>
 
-	<div class="col-md-8">
-		<!-- preloader -->
-		<div class="loader">
-			<img src="/local/templates/pakhi_main/images/loader.gif">
+<div class='box-catalog-element'>
+	<div class="inner-box-catalog-element">
+		<div class="box-img-cat-el">
+			<ul id="etalage">
+				<!-- detail picture -->
+				<li class='item-et-velo-img'>
+					<img class="etalage_thumb_image img-responsive et-velo-img"
+							src="<?=$arResult['DETAIL_PICTURE']['SRC']?>"
+							alt="<?=$arResult['NAME']?>">
+					<img class="etalage_source_image img-responsive et-velo-img"
+							src="<?=$arResult['DETAIL_PICTURE']['SRC']?>"
+					style='display: none;'>
+					<!-- src="/local/templates/pakhi_main/images/d1.jpg" -->
+				</li>
+
+				<!-- extra-pictures -->
+				<?if (!empty($arResult['MORE_PHOTO'])): ?>
+					<? foreach($arResult['MORE_PHOTO'] as $photo): ?>
+						<li>
+							<img class="etalage_thumb_image img-responsive"
+									src="<?=$photo['SRC']?>"
+									alt="">
+							<img class="etalage_source_image img-responsive"
+									src="<?=$photo['SRC']?>"
+							>
+							<!-- src="/local/templates/pakhi_main/images/d1.jpg" -->
+						</li>
+					<?endforeach;?>
+				<?endif;?>
+			</ul>
+			<div class="clearfix"></div>
 		</div>
 
-		<h3><?=$arResult['NAME']?></h3>
-		<div class="price">
-			<?php if(is_array($arResult["OFFERS"]) && !empty($arResult["OFFERS"])):?>
-					<?php $props = []; ?>
-					<?foreach($arResult["OFFERS"] as $arOffer):?>
-						<?foreach($arOffer["DISPLAY_PROPERTIES"] as $pid=>$arProperty):?>
-							<?
-							$props[$pid]['name'] = $arProperty["NAME"];
-							$props[$pid]['props'][$arProperty["VALUE"]]['id'] = $arOffer["ID"];
-							$props[$pid]['props'][$arProperty["VALUE"]]['value'] = $arProperty["DISPLAY_VALUE"];
-							?>
-						<?endforeach?>
+		<div class="box-cat-el-props">
+			<!-- preloader -->
+			<div class="loader">
+				<img src="/local/templates/main_velo/images/loader.gif">
+			</div>
+
+			<h3 class='el-catal-name'><?=$arResult['NAME']?></h3>
+
+			<div class='box-els-cat-props'>
+				<?php foreach($arResult["DISPLAY_PROPERTIES"] as $pid=>$arProperty):?>
+					<?php if ($arProperty['NAME'] == 'Наименование') continue; ?>
+					<p class='el-catal-props'><b><?=$arProperty["NAME"]?>:</b> <?php
+							if(is_array($arProperty["DISPLAY_VALUE"])):
+								echo implode("&nbsp;/&nbsp;", $arProperty["DISPLAY_VALUE"]);
+							elseif($pid=="MANUAL"):
+								?><a href="<?=$arProperty["VALUE"]?>"><?=GetMessage("CATALOG_DOWNLOAD")?></a><?
+							else:
+								echo $arProperty["DISPLAY_VALUE"];?>
+							<?php endif?>
+					</p>
+				<?endforeach?>
+			</div>
+
+			<div class="price">
+				<?php if(is_array($arResult["OFFERS"]) && !empty($arResult["OFFERS"])):?>
+						<?php $props = []; ?>
+						<?foreach($arResult["OFFERS"] as $arOffer):?>
+							<?foreach($arOffer["DISPLAY_PROPERTIES"] as $pid=>$arProperty):?>
+								<?
+								$props[$pid]['name'] = $arProperty["NAME"];
+								$props[$pid]['props'][$arProperty["VALUE"]]['id'] = $arOffer["ID"];
+								$props[$pid]['props'][$arProperty["VALUE"]]['value'] = $arProperty["DISPLAY_VALUE"];
+								?>
+							<?endforeach?>
 
 
-						<?foreach($arOffer["ITEM_PRICES"] as $code=>$arPrice):?>
-							<?
-								$props[$pid]['props'][$arProperty['VALUE']]['price'] = $arPrice['PRINT_PRICE'];
-							?>
+							<?foreach($arOffer["ITEM_PRICES"] as $code=>$arPrice):?>
+								<?
+									$props[$pid]['props'][$arProperty['VALUE']]['price'] = $arPrice['PRINT_PRICE'];
+								?>
+							<?endforeach;?>
+
+
 						<?endforeach;?>
 
+						<?php foreach($props as $id => $prop): ?>
 
-					<?endforeach;?>
+							<?php
+							foreach($prop['props'] as $k => $v){
+								$colors[] = $v['value'];
+							}
 
-					<?php foreach($props as $id => $prop): ?>
+							if (!CModule::IncludeModule('highloadblock')) //ПОДКЛЮЧАЕМ МОДУЛЬ
+								continue;
+							$ID = 2; //СЮДА ID ВАШЕГО HL ИНФОБЛОКА
+							$hldata = Bitrix\Highloadblock\HighloadBlockTable::getById($ID)->fetch();
+							$hlentity = Bitrix\Highloadblock\HighloadBlockTable::compileEntity($hldata);
+							$hlDataClass = $hldata['NAME'].'Table';
 
-						<?php
-						foreach($prop['props'] as $k => $v){
-							$colors[] = $v['value'];
-						}
+							//СОЗДАЕМ МАССИВ ФИЛЬТРА, В НЕМ УКАЗЫВАЕМ ЛОГИКУ ОТБОРА И (обязательно, иначе будет ИЛИ и отфильтрует только один цвет)
+							$arFilter = Array(
+								Array(
+										"LOGIC"=>"AND",
+										Array(
+											"UF_NAME"=> $colors //НАШ МАССИВ С ЦВЕТАМИ
+										)
+								)
+							);
+							$result = $hlDataClass::getList(array(
+								'select' => array('UF_FILE','UF_NAME','UF_DESCRIPTION','UF_XML_ID'), //НАМ НУЖНЫ ТОЛЬКО НАЗВАНИЕ И КАРТИНКА
+								//'order' => array('UF_NAME' =>'ASC'),
+								'filter' => $arFilter //ПРИМЕНЯМ СОЗДАННЫЙ ВЫШЕ ФИЛЬТР
+							));
+							while($res = $result->fetch())
+							{
 
-						if (!CModule::IncludeModule('highloadblock')) //ПОДКЛЮЧАЕМ МОДУЛЬ
-							continue;
-						$ID = 2; //СЮДА ID ВАШЕГО HL ИНФОБЛОКА
-						$hldata = Bitrix\Highloadblock\HighloadBlockTable::getById($ID)->fetch();
-						$hlentity = Bitrix\Highloadblock\HighloadBlockTable::compileEntity($hldata);
-						$hlDataClass = $hldata['NAME'].'Table';
+								$img_path = CFile::GetPath($res["UF_FILE"]); //ПОЛУЧАЕМ ПУСТЬ К КАРТИНКЕ
+								$props['COLOR']['props'][$res["UF_XML_ID"]]['img'] = '<img src="'.$img_path.'"/>';
+								if (!empty($res["UF_DESCRIPTION"]))
+									$props['COLOR']['props'][$res["UF_XML_ID"]]['code'] = $res["UF_DESCRIPTION"];
+							}
+							?>
+						<?php endforeach; ?>
+						<span class="price-value">
+							<?php foreach($props['COLOR']['props'] as $color): ?>
+								<?= $color['price'] ?> (<?= $color['value'] ?>)
+							<?php break; endforeach; ?>
+						</span>
+						<!--    COLORS    -->
+						<p><b><?= $props['COLOR']['name'] ?></b></p>
+						<ul class="color-props clearfix">
+							<?php $i = 0; foreach($props['COLOR']['props'] as $id => $color): ?>
+								<li data-id="<?= $color['id'] ?>" data-value="<?= $color['value'] ?>" data-price="<?= $color['price'] ?>"<?php if(!$i) echo ' class="active-prop"' ?>>
+									<div class='innerColor'>
+										<?=$color['value']?>
+										<?=$color['img']?>
+									</div>
+								</li>
+								<?php if(!$i) $id_offer = $color['id'];?>
+								<?php $i++; endforeach; ?>
+						</ul>
+						<!--    COLORS    -->
 
-						//СОЗДАЕМ МАССИВ ФИЛЬТРА, В НЕМ УКАЗЫВАЕМ ЛОГИКУ ОТБОРА И (обязательно, иначе будет ИЛИ и отфильтрует только один цвет)
-						$arFilter = Array(
-							Array(
-									"LOGIC"=>"AND",
-									Array(
-										"UF_NAME"=> $colors //НАШ МАССИВ С ЦВЕТАМИ
-									)
-							)
-						);
-						$result = $hlDataClass::getList(array(
-							'select' => array('UF_FILE','UF_NAME','UF_DESCRIPTION','UF_XML_ID'), //НАМ НУЖНЫ ТОЛЬКО НАЗВАНИЕ И КАРТИНКА
-							//'order' => array('UF_NAME' =>'ASC'),
-							'filter' => $arFilter //ПРИМЕНЯМ СОЗДАННЫЙ ВЫШЕ ФИЛЬТР
-						));
-						while($res = $result->fetch())
-						{
-
-							$img_path = CFile::GetPath($res["UF_FILE"]); //ПОЛУЧАЕМ ПУСТЬ К КАРТИНКЕ
-							$props['COLOR']['props'][$res["UF_XML_ID"]]['img'] = '<img src="'.$img_path.'"/>';
-							if (!empty($res["UF_DESCRIPTION"]))
-								$props['COLOR']['props'][$res["UF_XML_ID"]]['code'] = $res["UF_DESCRIPTION"];
-						}
-						?>
-					<?php endforeach; ?>
-					<span class="price-value">
-						<?php foreach($props['COLOR']['props'] as $color): ?>
-							<?= $color['price'] ?> (<?= $color['value'] ?>)
-						<?php break; endforeach; ?>
-					</span>
-					<!--    COLORS    -->
-					<p><b><?= $props['COLOR']['name'] ?></b></p>
-					<ul class="color-props clearfix">
-						<?php $i = 0; foreach($props['COLOR']['props'] as $id => $color): ?>
-							<li data-id="<?= $color['id'] ?>" data-value="<?= $color['value'] ?>" data-price="<?= $color['price'] ?>"<?php if(!$i) echo ' class="active-prop"' ?>>
-								<div class='innerColor'>
-									<?=$color['value']?>
-									<?=$color['img']?>
-								</div>
-							</li>
-							<?php if(!$i) $id_offer = $color['id'];?>
-							<?php $i++; endforeach; ?>
-					</ul>
-					<!--    COLORS    -->
-
-					<form action="<?=POST_FORM_ACTION_URI?>" method="post" enctype="multipart/form-data" class="add2cart">
-						<div class="input-group col-xs-3">
-							<input type="text" name="<?echo $arParams["PRODUCT_QUANTITY_VARIABLE"]?>" value="1" class="form-control" id="QUANTITY<?= $arElement['ID'] ?>">
-							<input type="hidden" name="action" value="ADD2BASKET">
-							<input type="hidden" name="ajax_basket" value="Y">
-							<input type="hidden" name="<?echo $arParams["PRODUCT_ID_VARIABLE"]?>" value="<?= $id_offer ?>" class="id-offer">
-							<span class="input-group-btn">
-						<button name="<?echo $arParams["ACTION_VARIABLE"]."ADD2BASKET"?>" class="btn btn-default" type="submit"><?echo GetMessage("CATALOG_ADD_TO_BASKET")?></button>
-					</span>
-						</div>
-					</form>
-
-			<?php else: ?>
-				
-					<?foreach($arResult["ITEM_PRICES"] as $code=>$arPrice):?>
-						<?=$arPrice["PRINT_PRICE"]?>
-					<?endforeach;?>
-					<?/*
-					<?foreach($arResult["PRICES"] as $code=>$arPrice):?>
-						<?if($arPrice["CAN_ACCESS"]):?>
-							<?if($arPrice["DISCOUNT_VALUE"] < $arPrice["VALUE"]):?>
-									<s><?=$arPrice["PRINT_VALUE"]?></s> <?=$arPrice["PRINT_DISCOUNT_VALUE"]?>
-							<?else:?>
-									<?=$arPrice["PRINT_VALUE"]?>
-							<?endif;?>
-						<?endif;?>
-					<?endforeach;?>
-					*/?>
-
-					<?if($arResult["CAN_BUY"]):?>
-						<div class="buy">
 						<form action="<?=POST_FORM_ACTION_URI?>" method="post" enctype="multipart/form-data" class="add2cart">
 							<div class="input-group col-xs-3">
-									<input type="text" name="<?echo $arParams["PRODUCT_QUANTITY_VARIABLE"]?>" value="1" class="form-control" id="QUANTITY<?= $arResult['ID'] ?>">
-									<input type="hidden" name="action" value="ADD2BASKET">
-									<input type="hidden" name="ajax_basket" value="Y">
-									<input type="hidden" name="<?echo $arParams["PRODUCT_ID_VARIABLE"]?>" value="<?echo $arResult["ID"]?>">
-									<span class="input-group-btn">
-						<button name="<?echo $arParams["ACTION_VARIABLE"]."ADD2BASKET"?>" class="btn btn-default" type="submit"><?echo GetMessage("CATALOG_ADD_TO_BASKET")?></button>
-					</span>
+								<input type="text" name="<?echo $arParams["PRODUCT_QUANTITY_VARIABLE"]?>" value="1" class="form-control" id="QUANTITY<?= $arElement['ID'] ?>">
+								<input type="hidden" name="action" value="ADD2BASKET">
+								<input type="hidden" name="ajax_basket" value="Y">
+								<input type="hidden" name="<?echo $arParams["PRODUCT_ID_VARIABLE"]?>" value="<?= $id_offer ?>" class="id-offer">
+								<span class="input-group-btn">
+							<button name="<?echo $arParams["ACTION_VARIABLE"]."ADD2BASKET"?>" class="btn btn-default" type="submit"><?echo GetMessage("CATALOG_ADD_TO_BASKET")?></button>
+						</span>
 							</div>
 						</form>
-					<?elseif((count($arResult["PRICES"]) > 0) || is_array($arResult["PRICE_MATRIX"])):?>
-						<?=GetMessage("CATALOG_NOT_AVAILABLE")?>
-					<?endif?>
-					</div>
 
-			<?php endif; ?>
+				<?php else: ?>
+					
+						<?foreach($arResult["ITEM_PRICES"] as $code=>$arPrice):?>
+							<span class='price_value'>
+								<?=$arPrice["PRINT_PRICE"]?>
+							</span>
+						<?endforeach;?>
+						<?/*
+						<?foreach($arResult["PRICES"] as $code=>$arPrice):?>
+							<?if($arPrice["CAN_ACCESS"]):?>
+								<?if($arPrice["DISCOUNT_VALUE"] < $arPrice["VALUE"]):?>
+										<s><?=$arPrice["PRINT_VALUE"]?></s> <?=$arPrice["PRINT_DISCOUNT_VALUE"]?>
+								<?else:?>
+										<?=$arPrice["PRINT_VALUE"]?>
+								<?endif;?>
+							<?endif;?>
+						<?endforeach;?>
+						*/?>
+
+						<?if($arResult["CAN_BUY"]):?>
+							<div class="buy">
+							<form action="<?=POST_FORM_ACTION_URI?>" method="post" enctype="multipart/form-data" class="add2cart">
+								<div class="input-group col-xs-3">
+										<input type="text" name="<?echo $arParams["PRODUCT_QUANTITY_VARIABLE"]?>" value="1" class="form-control" id="QUANTITY<?= $arResult['ID'] ?>">
+										<input type="hidden" name="action" value="ADD2BASKET">
+										<input type="hidden" name="ajax_basket" value="Y">
+										<input type="hidden" name="<?echo $arParams["PRODUCT_ID_VARIABLE"]?>" value="<?echo $arResult["ID"]?>">
+										<span class="input-group-btn">
+							<button name="<?echo $arParams["ACTION_VARIABLE"]."ADD2BASKET"?>" class="btn btn-default" type="submit"><?echo GetMessage("CATALOG_ADD_TO_BASKET")?></button>
+						</span>
+								</div>
+							</form>
+						<?elseif((count($arResult["PRICES"]) > 0) || is_array($arResult["PRICE_MATRIX"])):?>
+							<?=GetMessage("CATALOG_NOT_AVAILABLE")?>
+						<?endif?>
+						</div>
+
+				<?php endif; ?>
+			</div>
+
 		</div>
 
-		<hr>
-
-		<?php foreach($arResult["DISPLAY_PROPERTIES"] as $pid=>$arProperty):?>
-			<p><b><?=$arProperty["NAME"]?>:</b> <?php
-					if(is_array($arProperty["DISPLAY_VALUE"])):
-						echo implode("&nbsp;/&nbsp;", $arProperty["DISPLAY_VALUE"]);
-					elseif($pid=="MANUAL"):
-						?><a href="<?=$arProperty["VALUE"]?>"><?=GetMessage("CATALOG_DOWNLOAD")?></a><?
-					else:
-						echo $arProperty["DISPLAY_VALUE"];?>
-					<?php endif?>
-			</p>
-      <?endforeach?>
 	</div>
-
-	<div class="col-md-12">
+	<div class="col-md-12 box-el-catal-descrip">
 		<div class="single-bottom1">
 			<h6>Описание</h6>
 			<p><?=$arResult['DETAIL_TEXT'];?></p>
 		</div>
-   </div>
-
+	</div>
 </div>
 
+<?php /*
 <div class="row">
 	<div class="col-md-12">
 		<?$APPLICATION->IncludeComponent(
@@ -274,146 +297,4 @@ $this->setFrameMode(true);
 );?>
 	</div>
 </div>
-
-
-<?/*
-<!-- Картинка детальная -->
-<img src="<?=$arResult["DETAIL_PICTURE"]["SRC"]?>" alt="<?=$arResult["NAME"]?>" title="<?=$arResult["NAME"]?>" />
-				
-
-<!-- Доп картинки -->
-				<?
-                $LINE_ELEMENT_COUNT = 1;
-                if (count($arResult["MORE_PHOTO"]) > 0):?>
-                    <? foreach ($arResult["MORE_PHOTO"] as $PHOTO): ?>
-                        <a href="<?= $PHOTO["SRC"] ?>" title="<?= $arResult["NAME"] ?>" data-fancybox="group" data-caption="<?= $arResult['NAME']?>">
-                            <?
-                            $renderImage = CFile::ResizeImageGet($PHOTO, Array("width" => 400, "height" => 400), BX_RESIZE_IMAGE_EXACT, false);
-                            ?>
-                            <img class="image_sec" border="0" src="<?= $renderImage["src"] ?>"
-                                 alt="<?= $arResult["NAME"] ?>"/>
-                        </a>
-                    <? endforeach ?>
-                <? endif ?>
-
-
-
-<!-- Свойства -->
-				<?foreach($arResult["DISPLAY_PROPERTIES"] as $pid=>$arProperty):?>
-					<?=$arProperty["NAME"]?>: <?
-					if(is_array($arProperty["DISPLAY_VALUE"])):
-						echo implode("&nbsp;/&nbsp;", $arProperty["DISPLAY_VALUE"]);
-					elseif($pid=="MANUAL"):
-						?><a href="<?=$arProperty["VALUE"]?>"><?=GetMessage("CATALOG_DOWNLOAD")?></a><?
-					else:
-						echo $arProperty["DISPLAY_VALUE"];?>
-					<?endif?>
-				<?endforeach?>
-
-
-
-
-
-			
-
-	<?if(is_array($arResult["OFFERS"]) && !empty($arResult["OFFERS"])):?>
-	<!-- Если есть преддожения -->
-		<?foreach($arResult["OFFERS"] as $arOffer):?>
-			<!-- Свойства -->
-			<?foreach($arOffer["DISPLAY_PROPERTIES"] as $pid=>$arProperty):?>
-				<small><?=$arProperty["NAME"]?>:&nbsp;<?
-					if(is_array($arProperty["DISPLAY_VALUE"]))
-						echo implode("&nbsp;/&nbsp;", $arProperty["DISPLAY_VALUE"]);
-					else
-						echo $arProperty["DISPLAY_VALUE"];?></small><br />
-			<?endforeach?>
-			<!-- Цены -->
-			<?foreach($arOffer["PRICES"] as $code=>$arPrice):?>
-				<?if($arPrice["CAN_ACCESS"]):?>
-					<?=$arResult["CAT_PRICES"][$code]["TITLE"];?>
-					<?if($arPrice["DISCOUNT_VALUE"] < $arPrice["VALUE"]):?>
-						<s><?=$arPrice["PRINT_VALUE"]?></s> <?=$arPrice["PRINT_DISCOUNT_VALUE"]?>
-					<?else:?>
-						<?=$arPrice["PRINT_VALUE"]?>
-					<?endif?>
-					</p>
-				<?endif;?>
-			<?endforeach;?>
-			<!-- Покупка -->
-			<?if($arOffer["CAN_BUY"]):?>
-					<form action="<?=POST_FORM_ACTION_URI?>" method="post" enctype="multipart/form-data" сlass="add_form">
-						<a href="javascript:void(0)" onclick="if (BX('QUANTITY<?= $arOffer['ID'] ?>').value &gt; 1) BX('QUANTITY<?= $arOffer['ID'] ?>').value--;">-</a>
-	                        <input type="text" name="QUANTITY" value="1" id="QUANTITY<?= $arOffer['ID'] ?>"/>
-	                    <a href="javascript:void(0)" onclick="BX('QUANTITY<?= $arOffer['ID'] ?>').value++;">+</a>
-						<input type="text" name="<?echo $arParams["PRODUCT_QUANTITY_VARIABLE"]?>" value="1" size="5">
-						<input type="hidden" name="<?echo $arParams["ACTION_VARIABLE"]?>" value="BUY">
-						<input type="hidden" name="<?echo $arParams["PRODUCT_ID_VARIABLE"]?>" value="<?echo $arOffer["ID"]?>">
-						<input type="submit" name="<?echo $arParams["ACTION_VARIABLE"]."BUY"?>" value="<?echo GetMessage("CATALOG_BUY")?>">
-						<input type="submit" name="<?echo $arParams["ACTION_VARIABLE"]."ADD2BASKET"?>" value="<?echo GetMessage("CT_BCE_CATALOG_ADD")?>">
-					</form>
-			<?elseif(count($arResult["CAT_PRICES"]) > 0):?>
-				<?=GetMessage("CATALOG_NOT_AVAILABLE")?>
-			<?endif?>
-		<?endforeach;?>
-	<?else:?>
-	<!-- Если нет преддожений -->
-
-		<!-- Цены -->
-		<?foreach($arResult["PRICES"] as $code=>$arPrice):?>
-			<?if($arPrice["CAN_ACCESS"]):?>
-				<?=$arResult["CAT_PRICES"][$code]["TITLE"];?>
-				<?if($arPrice["DISCOUNT_VALUE"] < $arPrice["VALUE"]):?>
-					<s><?=$arPrice["PRINT_VALUE"]?></s> <?=$arPrice["PRINT_DISCOUNT_VALUE"]?>
-				<?else:?>
-					<?=$arPrice["PRINT_VALUE"]?>
-				<?endif?>
-				</p>
-			<?endif;?>
-		<?endforeach;?>
-		<!-- Покупка -->
-		<?if($arResult["CAN_BUY"]):?>
-				<form action="<?=POST_FORM_ACTION_URI?>" method="post" enctype="multipart/form-data" сlass="add_form">
-				<a href="javascript:void(0)" onclick="if (BX('QUANTITY<?= $arElement['ID'] ?>').value &gt; 1) BX('QUANTITY<?= $arElement['ID'] ?>').value--;">-</a>
-                        <input type="text" name="QUANTITY" value="1" id="QUANTITY<?= $arElement['ID'] ?>"/>
-                    <a href="javascript:void(0)" onclick="BX('QUANTITY<?= $arElement['ID'] ?>').value++;">+</a>
-				<input type="hidden" name="<?echo $arParams["ACTION_VARIABLE"]?>" value="BUY">
-				<input type="hidden" name="<?echo $arParams["PRODUCT_ID_VARIABLE"]?>" value="<?echo $arResult["ID"]?>">
-				<input type="submit" name="<?echo $arParams["ACTION_VARIABLE"]."BUY"?>" value="<?echo GetMessage("CATALOG_BUY")?>">
-				<input type="submit" name="<?echo $arParams["ACTION_VARIABLE"]."ADD2BASKET"?>" value="<?echo GetMessage("CATALOG_ADD_TO_BASKET")?>">
-				</form>
-		<?elseif((count($arResult["PRICES"]) > 0) || is_array($arResult["PRICE_MATRIX"])):?>
-			<?=GetMessage("CATALOG_NOT_AVAILABLE")?>
-		<?endif?>
-	<?endif?>
-		
-	
-	<!-- Описание -->
-	<?=$arResult["DETAIL_TEXT"]?>
-
-
-
-	<!-- Оценка -->
-	<? $APPLICATION->IncludeComponent("bitrix:iblock.vote", "", Array(
-                    "IBLOCK_TYPE" => "catalog",    // Тип инфоблока
-                    "IBLOCK_ID" => "5",    // Инфоблок
-                    "ELEMENT_ID" => $arResult["ID"],    // ID элемента
-                    "MAX_VOTE" => "5",    // Максимальный балл
-                    "VOTE_NAMES" => array(    // Подписи к баллам
-                        0 => "0",
-                        1 => "1",
-                        2 => "2",
-                        3 => "3",
-                        4 => "4",
-                        5 => "",
-                    ),
-                    "SET_STATUS_404" => "N",    // Устанавливать статус 404
-                    "MESSAGE_404" => "",    // Сообщение для показа (по умолчанию из компонента)
-                    "CACHE_TYPE" => "N",    // Тип кеширования
-                    "CACHE_TIME" => "0",    // Время кеширования (сек.)
-                    "COMPONENT_TEMPLATE" => "stars",
-                    "DISPLAY_AS_RATING" => "vote_avg",    // В качестве рейтинга показывать
-                ),
-                    false
-                ); ?> 
-
 */?>
