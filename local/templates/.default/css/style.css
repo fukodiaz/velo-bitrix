@@ -2374,3 +2374,35 @@ label.mobile_menu {
 .logo a:hover {
 	color: #333;
 } 
+
+
+/* for auth/reg page */
+
+.bx-authform {
+	position: relative;
+	top: 29px;
+	margin-left: 6px;
+}
+
+.bx-authform .bx-title {
+	margin-bottom: 17px;
+	font-size: 21px;
+	text-align: center;
+	display: inline-flex;
+	transform: translateY(9px);
+}
+
+.bx-authform-social {
+	transform: translateY(13px);
+}
+
+.profile-link.profile-user-div-link {
+	transform: translateY(15px);
+	display: inline-flex;
+}
+
+.bx-auth-reg {
+	transform: translateY(27px);
+	display: inline-flex;
+	padding-left: 4px;
+}

@@ -1,0 +1,25 @@
+.row.col-md-12.col-sm-12 {
+	margin-top: 30px;
+}
+
+.sale-order-detail-title-container .sale-order-detail-title-element {
+	margin-top: 47px;
+	padding-left: 9px;
+	font-size: 21px;
+}
+
+@media(max-width:567px) {
+	.row.col-md-12.col-sm-12 {
+		position: relative;
+		top: 27px;
+		left: 12px;
+	}
+}
+
+@media (min-width:569px) and (max-width:757px) {
+	.row.col-md-12.col-sm-12 {
+		position: relative;
+		top: 39px;
+		/* left: 12px; */
+	}
+}

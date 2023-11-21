@@ -16,6 +16,7 @@ if ($arResult['AUTHORIZED'])
 	echo Loc::getMessage('MAIN_AUTH_FORM_SUCCESS');
 	return;
 }
+
 ?>
 
 <div class="bx-authform">

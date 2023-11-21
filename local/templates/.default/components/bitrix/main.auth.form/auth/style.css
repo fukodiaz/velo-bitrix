@@ -1,0 +1,12 @@
+.bx-authform {
+	position: relative;
+	top: 26px;
+	margin-left: 6px;
+}
+
+.bx-authform .bx-title {
+	margin-bottom: 17px;
+	font-size: 21px;
+	text-align: center;
+	display: inline-flex;
+}
