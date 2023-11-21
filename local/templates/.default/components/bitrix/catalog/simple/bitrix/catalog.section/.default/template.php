@@ -72,7 +72,7 @@ $this->setFrameMode(true);
                     <div class="item-product" id="<?=$this->GetEditAreaId($arElement['ID']);?>">
 					 			<!-- preloader -->
 								<div class="loader">
-									<img src="/local/templates/pakhi_main/images/loader.gif">
+									<img src="/local/templates/main_velo/images/loader.gif">
 								</div>
 
                         <!-- <div class="view1 view-fifth1"> -->

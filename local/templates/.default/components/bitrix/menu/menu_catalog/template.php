@@ -56,7 +56,7 @@
 				<?=str_repeat("</ul></li>", ($previousLevel-1) );?>
 			<?endif?>
 		</ul>
-		<a href='#' class='link-cart'>
+		<a href='/personal/cart/index.php' class='link-cart'>
 			<i class="fa-solid fa-cart-shopping icon-cart"></i>
 		</a>
 	</div>
