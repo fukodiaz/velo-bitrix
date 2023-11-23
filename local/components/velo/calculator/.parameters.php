@@ -91,6 +91,14 @@ $arComponentParameters = [
 		],
 		"FIELD_CODE" => CIBlockParameters::GetFieldCode(GetMessage("CP_BNL_FIELD_CODE"), "DATA_SOURCE"),
 
+		"PAGEN_PAGES" => [
+			"PARENT" => "ADDITIONAL_SETTINGS",
+			"NAME" => GetMessage("PAGEN_QUALITY_ELS"),
+			"TYPE" => "STRING",
+			"DEFAULT" => "3",
+			"REFRESH" => "Y"
+		],
+
 		
 		// "NEWS_COUNT" => [
 		// 	"PARENT" => "BASE",

@@ -3,6 +3,7 @@ $MESS ['TYPE_IBLOCKS'] = "Тип информационного блока";
 $MESS ['IBLOCK_ID'] = "Код информационного блока";
 $MESS ['TOP_SECTIONS_NAME'] = "Раздел верхнего уровня";
 $MESS ['CP_BNL_FIELD_CODE'] = "Поля";
+$MESS ['PAGEN_QUALITY_ELS'] = "Количество элементов на одной странице (пагинация)";
 
 // $MESS ['IBLOCK_DETAIL_URL'] = "URL, ведущий на страницу с содержимым элемента раздела";
 // $MESS ['T_IBLOCK_DESC_ASC'] = "По возрастанию";

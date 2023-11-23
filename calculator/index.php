@@ -19,7 +19,8 @@ $APPLICATION->SetTitle("Калькулятор");
 			6 => "IBLOCK_TYPE_ID",
 			7 => "IBLOCK_ID",
 			8 => "",
-		)
+		),
+		"PAGEN_PAGES" => "2"
 	),
 	false
 );?><?require($_SERVER["DOCUMENT_ROOT"]."/bitrix/footer.php");?>
