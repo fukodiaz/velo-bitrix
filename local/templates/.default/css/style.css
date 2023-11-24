@@ -1692,7 +1692,7 @@ p.desc {
 	width:20%;
 }
 .top-nav {
-  width: 57%;
+  width: 53%;
   top: 32px;
 }
 .caption h1 {
@@ -2318,6 +2318,24 @@ a.order{
 	}
 }
 
+@media (min-width: 720px) and (max-width: 800px) {
+	.top-nav {
+		margin-top: 1px;
+		width: 70%;
+		position: absolute;
+		right: 7px;
+	}
+	.inner-block-nav {
+		height: 55px;
+		padding-right: 7px;
+	}
+
+	/* label.mobile_menu {
+		width: 100%;
+		float: right;
+  } */
+}
+
 @media (max-width: 768px) {
 	.logo {
 		margin-bottom: 3px;
@@ -2333,7 +2351,7 @@ a.order{
 
 	.logo {
 		position: relative;
-		width: 120px;
+		width: 130px;
 		transform: translateY(-4px);
 	}
 }
@@ -2354,7 +2372,7 @@ a.order{
 }
 
 .logo {
-	min-width: 115px;
+	min-width: 130px;
 	font-size: 17px;
 }
 
