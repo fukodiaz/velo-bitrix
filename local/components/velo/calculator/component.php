@@ -56,10 +56,9 @@ if(empty($arParams["SECTION_CODE_SERV"]))
 	$arParams["SECTION_CODE_SERV"] = [];
 
 
-$arNagigation = CDBResult::GetNavParams($arParams['PAGEN_PAGES']);
+$arNavigation = CDBResult::GetNavParams($arParams['PAGEN_PAGES']);
 
-if($this->startResultCache(false, [$arNagigation], ($arParams["CACHE_GROUPS"]==="N"? false: $USER->GetGroups())))
-{
+if($this->startResultCache(false, [$arNavigation], ($arParams["CACHE_GROUPS"]==="N"? false: $USER->GetGroups()))) {
 	if(!Loader::includeModule("iblock"))
 	{
 		$this->abortResultCache();
@@ -68,23 +67,14 @@ if($this->startResultCache(false, [$arNagigation], ($arParams["CACHE_GROUPS"]===
 	}
 	//getting elements from chosen iblocks
 	$arSelect = array_merge($arParams["FIELD_CODE"], [
-		"ID",
-		"IBLOCK_ID",
-		"ACTIVE_FROM",
-		"DETAIL_PAGE_URL",
-		"NAME",
-		// "PRICE_TYPE",
-		// "CATALOG_GROUP_1",
-		// "PROPERTY_9",
+		"ID", "IBLOCK_ID", "ACTIVE_FROM", "DETAIL_PAGE_URL", "NAME", // "CATALOG_GROUP_1", // "PROPERTY_9",
 	]);
 	$arFilter = [
 		"IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
 		"IBLOCK_ID"=> $arParams["IBLOCKS"],
 		"ACTIVE" => "Y",
 		'SECTION_ID' => $arParams["SECTION_CODE"],
-		'INCLUDE_SUBSECTIONS' => 'Y',
-		// "ACTIVE_DATE" => "Y",
-		// "CHECK_PERMISSIONS" => "Y",
+		'INCLUDE_SUBSECTIONS' => 'Y', // "ACTIVE_DATE" => "Y", // "CHECK_PERMISSIONS" => "Y",
 	];
 	$arNavParams = [
 		'nPageSize' => $arParams['PAGEN_PAGES'],
@@ -93,72 +83,40 @@ if($this->startResultCache(false, [$arNagigation], ($arParams["CACHE_GROUPS"]===
 	];
 
 	$arResult=['ITEMS' => []];
-	$base_price = 1; //type of price
+	$base_price = 1; //type of price of goods
+
+	$arResult['ITEMS'] = fillArItems(
+		$arFilter,
+		$arNavParams,
+		$arSelect,
+		true,
+		$base_price
+	);
+
+	//services
+	$arServSelect = array_merge($arParams["FIELD_CODE_SERV"], [
+		"ID", "IBLOCK_ID", "ACTIVE_FROM", "NAME",
+	]);
+	$arServFilter = [
+		"IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
+		"IBLOCK_ID"=> $arParams["IBLOCKS_SERV"],
+		"ACTIVE" => "Y",
+		'SECTION_ID' => $arParams["SECTION_CODE_SERV"],
+		'INCLUDE_SUBSECTIONS' => 'Y',
+	];
+
+	$arResult['ITEMS_SERV'] = [];
+	$base_serv_price = 1; //type of price of service
 		
-	$rsItems = CIBlockElement::GetList(
-		["SORT"=>"ASC"], 
-		$arFilter, 
-		false, 
-		$arNavParams,// ["nTopCount"=>$arParams["NEWS_COUNT"]], 
-		$arSelect);
-	// $rsItems->SetUrlTemplates($arParams["DETAIL_URL"]);
+	$arResult['ITEMS_SERV'] = fillArItems(
+		$arServFilter,
+		false,
+		$arServSelect,
+		false,
+		$base_serv_price
+	);
 
-	$arResult['NAV_STRING'] = $rsItems -> GetPageNavString(GetMessage('PAGEN_TITLE'), 'velo_pagination');
-	while($arItem = $rsItems->GetNext())
-	{
-		//button for edit/delete element of iblock
-		$arButtons = CIBlock::GetPanelButtons(
-			$arItem["IBLOCK_ID"],
-			$arItem["ID"],
-			0,
-			["SECTION_BUTTONS"=>false, "SESSID"=>false]
-		);
-		$arItem["EDIT_LINK"] = $arButtons["edit"]["edit_element"]["ACTION_URL"] ?? '';
-		$arItem["DELETE_LINK"] = $arButtons["edit"]["delete_element"]["ACTION_URL"] ?? '';
-
-		//adding fields to item-goods
-		$ar_fields = [];
-		if ($obRes = CIBlockElement::GetByID($arItem['ID']) -> GetNextElement()) {
-			$ar_fields = $obRes -> GetFields();
-			//properties of goods
-			$ar_props = $obRes -> GetProperties([], ['ACTIVE'=>'Y', 'EMPTY'=>'N']);
-			//getting prices
-			$prices = CPrice::GetList(
-				[],
-				[
-					'PRODUCT_ID'=>$ar_fields['ID'],
-					'CATALOG_GROUP_ID' => [$base_price]
-				]
-			);
-
-			//adding price in array of fields
-			while($price = $prices->Fetch()) {
-				$ar_fields['PRICES'][$price['CATALOG_GROUP_ID']] = $price;
-			}
-			$ar_fields['PROPERTIES'] = $ar_props;
-		}
-		$arItem['FIELDS'] = $ar_fields;
-
-		Iblock\InheritedProperty\ElementValues::queue($arItem["IBLOCK_ID"], $arItem["ID"]);
-
-		$arResult["ITEMS"][]=$arItem;
-		$arResult["LAST_ITEM_IBLOCK_ID"]=$arItem["IBLOCK_ID"];
-	}
-
-	foreach ($arResult["ITEMS"] as &$arItem)
-	{
-		$ipropValues = new Iblock\InheritedProperty\ElementValues($arItem["IBLOCK_ID"], $arItem["ID"]);
-		$arItem["IPROPERTY_VALUES"] = $ipropValues->getValues();
-		Iblock\Component\Tools::getFieldImageData(
-			$arItem,
-			array('PREVIEW_PICTURE', 'DETAIL_PICTURE'),
-			Iblock\Component\Tools::IPROPERTY_ENTITY_ELEMENT,
-			'IPROPERTY_VALUES'
-		);
-	}
-	unset($arItem);
-
-	$this->setResultCacheKeys(["LAST_ITEM_IBLOCK_ID",]);
+	$this->setResultCacheKeys(["LAST_ITEM_IBLOCK_ID", 'LAST_ITEM_SERV_IBLOCK_ID']);
 	$this->includeComponentTemplate();
 }
 
@@ -175,4 +133,74 @@ if(
 			0, 
 			["SECTION_BUTTONS"=>false]);
 	$this->addIncludeAreaIcons(CIBlock::GetComponentMenu($APPLICATION->GetPublicShowMode(), $arButtons));
+}
+
+
+function setFieldsToArItem($arItemId, $base_price) {
+		$ar_fields = [];
+		if ($obRes = CIBlockElement::GetByID($arItemId) -> GetNextElement()) {
+			$ar_fields = $obRes -> GetFields();
+			//properties of element iblock
+			$ar_props = $obRes -> GetProperties([], ['ACTIVE'=>'Y', 'EMPTY'=>'N']);
+			//getting prices
+			$prices = CPrice::GetList(
+				[],
+				[
+					'PRODUCT_ID'=>$ar_fields['ID'],
+					'CATALOG_GROUP_ID' => [$base_price]
+				]
+			);
+
+			//adding price in array of fields
+			while($price = $prices->Fetch()) {
+				$ar_fields['PRICES'][$price['CATALOG_GROUP_ID']] = $price;
+			}
+			$ar_fields['PROPERTIES'] = $ar_props;
+		}
+
+		return $ar_fields;
+}
+
+function fillArItems($arFilter, $arNavParams, $arSelect, $isNav, $base_price) {
+	
+	$rsItems = CIBlockElement::GetList(
+		["SORT"=>"ASC"], 
+		$arFilter, 
+		false, 
+		$arNavParams, 
+		$arSelect);
+
+	if ($isNav)
+		$arResult['NAV_STRING'] = $rsItems -> GetPageNavString(GetMessage('PAGEN_TITLE'), 'velo_pagination');
+	while($arItem = $rsItems->GetNext())
+	{
+		//button for edit/delete element of iblock
+		$arButtons = CIBlock::GetPanelButtons(
+			$arItem["IBLOCK_ID"], $arItem["ID"], 0, ["SECTION_BUTTONS"=>false, "SESSID"=>false]);
+		$arItem["EDIT_LINK"] = $arButtons["edit"]["edit_element"]["ACTION_URL"] ?? '';
+		$arItem["DELETE_LINK"] = $arButtons["edit"]["delete_element"]["ACTION_URL"] ?? '';
+
+		//populate fields of item
+		$arItem['FIELDS'] = setFieldsToArItem($arItem['ID'], $base_price);
+
+		Iblock\InheritedProperty\ElementValues::queue($arItem["IBLOCK_ID"], $arItem["ID"]);
+
+		$arResult['ITEMS'][]=$arItem;
+		$arResult['LAST_ITEM_IBLOCK_ID']=$arItem["IBLOCK_ID"];
+	}
+
+	foreach ($arResult['ITEMS'] as &$arItem)
+	{
+		$ipropValues = new Iblock\InheritedProperty\ElementValues($arItem["IBLOCK_ID"], $arItem["ID"]);
+		$arItem["IPROPERTY_VALUES"] = $ipropValues->getValues();
+		Iblock\Component\Tools::getFieldImageData(
+			$arItem,
+			array('PREVIEW_PICTURE', 'DETAIL_PICTURE'),
+			Iblock\Component\Tools::IPROPERTY_ENTITY_ELEMENT,
+			'IPROPERTY_VALUES'
+		);
+	}
+	unset($arItem);
+
+	return $arResult['ITEMS'];
 }
