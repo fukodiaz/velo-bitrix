@@ -12,10 +12,20 @@ if (!Loader::includeModule('iblock'))
 	return;
 }
 
-// $iblockExists = (!empty($arCurrentValues['IBLOCK_ID']) && (int)$arCurrentValues['IBLOCK_ID'] > 0);
+function getParamsIBlockType($defaultVal, $mess) {
+	$arTypesEx = CIBlockParameters::GetIBlockTypes();
+	return [	
+		"PARENT" => "BASE",
+		"NAME" => GetMessage($mess),
+		"TYPE" => "LIST",
+		"VALUES" => $arTypesEx,
+		"DEFAULT" => $defaultVal,
+		"REFRESH" => "Y",
+	];
+};
 
-$arTypesEx = CIBlockParameters::GetIBlockTypes();
-
+//to define ID IBlock
+global $arIBlocks;
 $arIBlocks = [];
 $iblockFilter = [
 	'ACTIVE' => 'Y',
@@ -31,66 +41,63 @@ while($arRes = $db_iblock->Fetch())
 	$arIBlocks[$arRes["ID"]] = "[" . $arRes["ID"] . "] " . $arRes["NAME"];
 }
 
-//for to chose top section
-$arSection = [];
-$ibSectionsFilter = ['ACTIVE' => 'Y'];
-if (!empty($arCurrentValues['IBLOCKS'])) {
-	$ibSectionsFilter['IBLOCK_ID'] = $arCurrentValues['IBLOCKS'];
+function getParamsIBlocks($mess) {
+	global $arIBlocks;
+	return [
+		"PARENT" => "BASE",
+		"NAME" => GetMessage($mess),
+		"TYPE" => "LIST",
+		"VALUES" => $arIBlocks,
+		"DEFAULT" => '',
+		// "MULTIPLE" => "Y",
+		"REFRESH" => "Y"
+	];
+};
+
+//to chose section
+function gettingArSection($iblock_id) {
+	$arSection = [];
+	$ibSectionsFilter = ['ACTIVE' => 'Y'];
+	if (!empty($iblock_id)) {
+		$ibSectionsFilter['IBLOCK_ID'] = $iblock_id;
+	}
+
+	$db_sections = CIBlockSection::GetList(
+		['SORT'=>'DESC'],
+		$ibSectionsFilter,
+		false,
+		['ID', 'NAME']	
+	);
+	while($section = $db_sections->GetNext()) {
+		$arSection[$section['ID']] = '[' . $section['ID'] . '] ' . $section['NAME'];
+	}
+	
+	return $arSection;
 }
 
-$db_sections = CIBlockSection::GetList(
-	['SORT'=>'DESC'],
-	$ibSectionsFilter,
-	false,
-	['ID', 'NAME']	
-);
-while($section = $db_sections->GetNext()) {
-	$arSection[$section['ID']] = '[' . $section['ID'] . '] ' . $section['NAME'];
-}
+function getSectionCode($vals, $mess) {
+	return [
+		"PARENT" => "BASE",
+		"NAME" => GetMessage($mess),
+		"TYPE" => "LIST",
+		"VALUES" => $vals,//gettingArSection($arCurrentValues['IBLOCKS'])
+		"DEFAULT" => '',
+		"REFRESH" => "Y"
+	];
+};
 
-// $arSorts = [
-// 	"ASC" => GetMessage("T_IBLOCK_DESC_ASC"),
-// 	"DESC" => GetMessage("T_IBLOCK_DESC_DESC"),
-// ];
-
-// $arSortFields = [
-// 	"ID" => GetMessage("T_IBLOCK_DESC_FID"),
-// 	"NAME" => GetMessage("T_IBLOCK_DESC_FNAME"),
-// 	"ACTIVE_FROM" => GetMessage("T_IBLOCK_DESC_FACT"),
-// 	"SORT" => GetMessage("T_IBLOCK_DESC_FSORT"),
-// 	"TIMESTAMP_X" => GetMessage("T_IBLOCK_DESC_FTSAMP"),
-// ];
+//getting array codes of fields
+function getFieldCodes($mess) {
+	return CIBlockParameters::GetFieldCode(GetMessage($mess), "DATA_SOURCE");
+};
 
 $arComponentParameters = [
 	"GROUPS" => [],
 	"PARAMETERS" => [
-		"IBLOCK_TYPE" => [	
-			"PARENT" => "BASE",
-			"NAME" => GetMessage("TYPE_IBLOCKS"),
-			"TYPE" => "LIST",
-			"VALUES" => $arTypesEx,
-			"DEFAULT" => "catalog",
-			"REFRESH" => "Y",
-		],
-		"IBLOCKS" => [
-			"PARENT" => "BASE",
-			"NAME" => GetMessage('IBLOCK_ID'),
-			"TYPE" => "LIST",
-			"VALUES" => $arIBlocks,
-			"DEFAULT" => '',
-			// "MULTIPLE" => "Y",
-			"REFRESH" => "Y"
-		],
-		"TOP_SECTION_CODE" => [
-			"PARENT" => "BASE",
-			"NAME" => GetMessage('TOP_SECTIONS_NAME'),
-			"TYPE" => "LIST",
-			"VALUES" => $arSection,
-			"DEFAULT" => '',
-			"REFRESH" => "Y"
-		],
-		"FIELD_CODE" => CIBlockParameters::GetFieldCode(GetMessage("CP_BNL_FIELD_CODE"), "DATA_SOURCE"),
-
+		"IBLOCK_TYPE" => getParamsIBlockType("catalog", "TYPE_IBLOCKS"),
+		"IBLOCKS" => getParamsIBlocks('IBLOCK_ID'),
+		"SECTION_CODE" => getSectionCode(gettingArSection($arCurrentValues['IBLOCKS']), 'SECTIONS_NAME'),
+		"FIELD_CODE" => getFieldCodes("FIELD_CODE"),
 		"PAGEN_PAGES" => [
 			"PARENT" => "ADDITIONAL_SETTINGS",
 			"NAME" => GetMessage("PAGEN_QUALITY_ELS"),
@@ -99,60 +106,10 @@ $arComponentParameters = [
 			"REFRESH" => "Y"
 		],
 
-		
-		// "NEWS_COUNT" => [
-		// 	"PARENT" => "BASE",
-		// 	"NAME" => GetMessage("T_IBLOCK_DESC_LIST_CONT"),
-		// 	"TYPE" => "STRING",
-		// 	"DEFAULT" => "20",
-		// ],
-		// "FIELD_CODE" => CIBlockParameters::GetFieldCode(GetMessage("CP_BNL_FIELD_CODE"), "DATA_SOURCE"),
-		// "SORT_BY1" => [
-		// 	"PARENT" => "DATA_SOURCE",
-		// 	"NAME" => GetMessage("T_IBLOCK_DESC_IBORD1"),
-		// 	"TYPE" => "LIST",
-		// 	"DEFAULT" => "ACTIVE_FROM",
-		// 	"VALUES" => $arSortFields,
-		// 	"ADDITIONAL_VALUES" => "Y",
-		// ],
-		// "SORT_ORDER1" => [
-		// 	"PARENT" => "DATA_SOURCE",
-		// 	"NAME" => GetMessage("T_IBLOCK_DESC_IBBY1"),
-		// 	"TYPE" => "LIST",
-		// 	"DEFAULT" => "DESC",
-		// 	"VALUES" => $arSorts,
-		// 	"ADDITIONAL_VALUES" => "Y",
-		// ],
-		// "SORT_BY2" => [
-		// 	"PARENT" => "DATA_SOURCE",
-		// 	"NAME" => GetMessage("T_IBLOCK_DESC_IBORD2"),
-		// 	"TYPE" => "LIST",
-		// 	"DEFAULT" => "SORT",
-		// 	"VALUES" => $arSortFields,
-		// 	"ADDITIONAL_VALUES" => "Y",
-		// ],
-		// "SORT_ORDER2" => [
-		// 	"PARENT" => "DATA_SOURCE",
-		// 	"NAME" => GetMessage("T_IBLOCK_DESC_IBBY2"),
-		// 	"TYPE" => "LIST",
-		// 	"DEFAULT" => "ASC",
-		// 	"VALUES" => $arSorts,
-		// 	"ADDITIONAL_VALUES" => "Y",
-		// ],
-		// "DETAIL_URL" => CIBlockParameters::GetPathTemplateParam(
-		// 	"DETAIL",
-		// 	"DETAIL_URL",
-		// 	GetMessage("IBLOCK_DETAIL_URL"),
-		// 	"",
-		// 	"URL_TEMPLATES"
-		// ),
-		// "ACTIVE_DATE_FORMAT" => CIBlockParameters::GetDateFormat(GetMessage("T_IBLOCK_DESC_ACTIVE_DATE_FORMAT"), "ADDITIONAL_SETTINGS"),
-		// "CACHE_TIME" => ["DEFAULT"=>300],
-		// "CACHE_GROUPS" => [
-		// 	"PARENT" => "CACHE_SETTINGS",
-		// 	"NAME" => GetMessage("CP_BNL_CACHE_GROUPS"),
-		// 	"TYPE" => "CHECKBOX",
-		// 	"DEFAULT" => "Y",
-		// ],
+		//params for services
+		// "IBLOCK_TYPE_SERV" => getParamsIBlockType("catalog", "TYPE_IBLOCKS_SERV"),
+		"IBLOCKS_SERV" => getParamsIBlocks('IBLOCK_ID_SERV'),
+		"SECTION_CODE_SERV" => getSectionCode(gettingArSection($arCurrentValues['IBLOCKS_SERV']), 'SECTION_CODE_SERV'),
+		"FIELD_CODE_SERV" => getFieldCodes('FIELD_CODE_SERV')
 	],
 ];

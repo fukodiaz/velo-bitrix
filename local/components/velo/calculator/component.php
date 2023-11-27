@@ -23,6 +23,7 @@ if($arParams["IBLOCK_TYPE"] == '')
 if($arParams["IBLOCK_TYPE"]=="-")
 	$arParams["IBLOCK_TYPE"] = "";
 
+//params for goods
 if(!is_array($arParams["IBLOCKS"]))
 	$arParams["IBLOCKS"] = [$arParams["IBLOCKS"]];
 foreach($arParams["IBLOCKS"] as $k=>$v)
@@ -35,12 +36,25 @@ foreach($arParams["FIELD_CODE"] as $key=>$val)
 	if(!$val)
 		unset($arParams["FIELD_CODE"][$key]);
 
-if(empty($arParams["TOP_SECTION_CODE"]))
-	$arParams["TOP_SECTION_CODE"] = [];
+if(empty($arParams["SECTION_CODE"]))
+	$arParams["SECTION_CODE"] = [];
 
+//params for services
+if(!is_array($arParams["IBLOCKS_SERV"]))
+	$arParams["IBLOCKS_SERV"] = [$arParams["IBLOCKS_SERV"]];
+foreach($arParams["IBLOCKS_SERV"] as $k=>$v)
+	if(!$v)
+		unset($arParams["IBLOCKS_SERV"][$k]);
 
-// $arParams["DETAIL_URL"]=trim($arParams["DETAIL_URL"]);
-// var_dump($arParams["TOP_SECTION_CODE"]);
+if(!is_array($arParams["FIELD_CODE_SERV"]))
+	$arParams["FIELD_CODE_SERV"] = [];
+foreach($arParams["FIELD_CODE_SERV"] as $key=>$val)
+	if(!$val)
+		unset($arParams["FIELD_CODE_SERV"][$key]);
+
+if(empty($arParams["SECTION_CODE_SERV"]))
+	$arParams["SECTION_CODE_SERV"] = [];
+
 
 $arNagigation = CDBResult::GetNavParams($arParams['PAGEN_PAGES']);
 
@@ -67,7 +81,7 @@ if($this->startResultCache(false, [$arNagigation], ($arParams["CACHE_GROUPS"]===
 		"IBLOCK_TYPE" => $arParams["IBLOCK_TYPE"],
 		"IBLOCK_ID"=> $arParams["IBLOCKS"],
 		"ACTIVE" => "Y",
-		'SECTION_ID' => $arParams["TOP_SECTION_CODE"],
+		'SECTION_ID' => $arParams["SECTION_CODE"],
 		'INCLUDE_SUBSECTIONS' => 'Y',
 		// "ACTIVE_DATE" => "Y",
 		// "CHECK_PERMISSIONS" => "Y",
