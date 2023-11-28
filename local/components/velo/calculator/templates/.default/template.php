@@ -11,7 +11,7 @@
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
 	$this->setFrameMode(true);
-	// debug($arResult['ITEMS_SERV']);
+	// debug($arResult['ITEMS_COVERING']);
 ?>
 
 
@@ -163,6 +163,27 @@
 			</div>
 
 		<?php endforeach; ?>
+		</div>
+
+		<!-- protective covering -->
+		<h3 class='headingChoice headingChoice_covering'>3. Защитное покрытие:</h3>
+		<div class='inner-box-products inner-box-cover'>
+			<?foreach($arResult['ITEMS_COVERING'] as $item):?>
+				<div class='wrapperCovering'>
+					<div class='boxChoice'>
+						<input class='input_choice-goods visually-hidden' type='radio' name='covering' value='<?=$item['ID'];?>' id='covering-<?=$item['ID'];?>' data-price="<?=$item['PRICE'];?>">
+						<label class='label_choice-goods' for='covering-<?=$item['ID'];?>'></label>
+					</div>
+					<div class='blockContentCover'>
+						<p class='optionCover'>
+							<?=$item['OPTION']?>
+						</p>
+						<p class='priceCover'>
+							<?=$item['PRICE']?> &#8381
+						</p>
+					</div>
+				</div>
+			<?endforeach;?>
 		</div>
 	</div>
 </div>

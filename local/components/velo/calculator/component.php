@@ -119,6 +119,21 @@ if($this->startResultCache(false, [$arNavigation], ($arParams["CACHE_GROUPS"]===
 		$base_serv_price
 	);
 
+	//service_covering
+	$dataServCover = [
+		[
+			'ID' => 1,
+			'OPTION' => 'С защитным покрытием',
+			'PRICE' => 2100
+		],
+		[
+			'ID' => 2,
+			'OPTION' => 'Без покрытия',
+			'PRICE' => 0
+		]
+	];
+	$arResult['ITEMS_COVERING'] = $dataServCover;
+
 	$this->setResultCacheKeys(["LAST_ITEM_IBLOCK_ID", 'LAST_ITEM_SERV_IBLOCK_ID']);
 	$this->includeComponentTemplate();
 }

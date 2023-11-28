@@ -15,6 +15,13 @@
 	margin-bottom: 23px;
 }
 
+.wrapperCalcul .container-products .inner-box-cover {
+	justify-content: flex-start;
+	/* margin-bottom: 40px; */
+	box-sizing: border-box;
+	padding-bottom: 25px;
+}
+
 .wrapperCalcul .container-products .boxHeading {
 	width: 100%;
 	display: flex;
@@ -43,7 +50,8 @@
 	word-wrap: break-word;
 }
 
-.wrapperCalcul .container-products .headingChoice_serv {
+.wrapperCalcul .container-products .headingChoice_serv,
+.wrapperCalcul .container-products .headingChoice_covering {
 	color: #572529b3;
 }
 
@@ -198,6 +206,28 @@
 }
 .products .mens-toolbar{
     width: 100%;
+}
+
+.wrapperCovering {
+	display: flex;
+	margin-right: 30px;
+	margin-bottom: 6px;
+}
+
+.blockContentCover .optionCover {
+	box-sizing: border-box;
+	padding-top: 3px;
+	margin-bottom: 2px;
+	font-size: 16px;
+	font-weight: 500;
+	color: rgba(51, 51, 51, .85);
+}
+
+.blockContentCover .priceCover {
+	box-sizing: border-box;
+	font-size: 17px;
+	color: #fd9f39;
+	font-weight: 500;
 }
 
 .loader {
@@ -395,10 +425,18 @@
 	.box-catalog-section {
 		padding-top: 27px;
 	}
+
+	.wrapperCalcul .container-products .inner-box-cover {
+		padding-bottom: 32px;
+	}
 }
 
 @media (min-width: 1024px) {
 	.box-catalog-section {
 		padding-top: 29px;
+	}
+
+	.wrapperCalcul .container-products .inner-box-cover {
+		padding-bottom: 41px;
 	}
 }
