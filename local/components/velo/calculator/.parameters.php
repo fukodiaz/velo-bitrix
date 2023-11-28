@@ -110,6 +110,12 @@ $arComponentParameters = [
 		// "IBLOCK_TYPE_SERV" => getParamsIBlockType("catalog", "TYPE_IBLOCKS_SERV"),
 		"IBLOCKS_SERV" => getParamsIBlocks('IBLOCK_ID_SERV'),
 		"SECTION_CODE_SERV" => getSectionCode(gettingArSection($arCurrentValues['IBLOCKS_SERV']), 'SECTION_CODE_SERV'),
-		"FIELD_CODE_SERV" => getFieldCodes('FIELD_CODE_SERV')
+		"FIELD_CODE_SERV" => getFieldCodes('FIELD_CODE_SERV'),
+		"TITLE_SERV" => [
+			"PARENT" => "ADDITIONAL_SETTINGS",
+			"NAME" => GetMessage("TITLE_SERV"),
+			"TYPE" => "STRING",
+			"DEFAULT" => "Предпочтительный вариант:"
+		],
 	],
 ];

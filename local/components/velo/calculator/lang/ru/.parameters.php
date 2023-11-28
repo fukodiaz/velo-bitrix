@@ -10,3 +10,4 @@ $MESS ['TYPE_IBLOCKS_SERV'] = "Тип информационного блока 
 $MESS ['IBLOCK_ID_SERV'] = "Код информационного блока услуг";
 $MESS ['SECTION_CODE_SERV'] = "Виды услуг";
 $MESS ['FIELD_CODE_SERV'] = "Поля для услуг";
+$MESS ['TITLE_SERV'] = "Установить заголовок для услуг";

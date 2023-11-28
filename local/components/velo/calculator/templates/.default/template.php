@@ -92,5 +92,77 @@
 		<?
 			echo $arResult["NAV_STRING"];
 		?>
+
+
+		<h3 class='headingChoice headingChoice_serv'>2. <?=$arParams['TITLE_SERV']?></h3>
+		<div class='inner-box-products'>
+			<?foreach($arResult["ITEMS_SERV"] as $cell=>$arElement):?>
+				<?
+				$this->AddEditAction($arElement['ID'], $arElement['EDIT_LINK'], CIBlock::GetArrayByID($arParams["IBLOCK_ID"], "ELEMENT_EDIT"));
+				$this->AddDeleteAction($arElement['ID'], $arElement['DELETE_LINK'], CIBlock::GetArrayByID($arParams["IBLOCK_ID"], "ELEMENT_DELETE"), array("CONFIRM" => GetMessage('CT_BCS_ELEMENT_DELETE_CONFIRM')));
+				?>
+
+				<?php
+				if(empty($arElement["PREVIEW_PICTURE"])){
+					$arElement["PREVIEW_PICTURE"] = [
+						'SRC' => $this->GetFolder().'/images/line-empty2.png',
+					];
+				}
+				?>
+				<?php
+				if(empty($arElement["DETAIL_PAGE_URL"]))
+					$arElement["DETAIL_PAGE_URL"] = '#'; ?>
+
+				<div class="cart-goods">
+					<div class="item-product item-product_tires" id="<?=$this->GetEditAreaId($arElement['ID']);?>">
+
+						<div class="top_box">
+							<h3 class="m_1"><?=$arElement["NAME"]?></h3>
+							<?php if (!empty($brand = $arElement["FIELDS"]['PROPERTIES']['BRAND'])): ?>
+							<p class="m_2"><?=$brand['VALUE']?></p>
+							<?php endif;?>
+							<a href="<?=$arElement["DETAIL_PAGE_URL"]?>"
+								class='link-img-product'>
+								<div class="grid_img">
+									<div class="css3">
+										<img src="<?=$arElement["PREVIEW_PICTURE"]["SRC"]?>" alt="<?=$arElement["NAME"]?>" class='img-product'>
+									</div>
+									<!-- <div class="mask1">
+										<div class="add-cart">Подробнее</div>
+									</div> -->
+								</div>
+							</a>
+							<div class="price">
+								<?php $price = 0;?>
+								<?if (!empty($arPrices = $arElement['FIELDS']['PRICES'])):?>
+									<?foreach($arPrices as $k => $arPrice):?>
+										<?if (!empty(($price = $arPrice['PRICE']))):?>
+										<p>
+											<?=(int)$price .  ' '?>&#8381
+										</p>
+										<?else:?>
+											<p>
+												Цена не указана
+											</p>
+										<?endif;?>
+									<?endforeach;?>
+									<?else:?>
+										<p>
+											Цена не указана
+										</p>
+								<?endif;?>
+							</div>
+							<div class='boxChoice'>
+								<input class='input_choice-goods visually-hidden' type='radio' name='service_tires' value='<?=$arElement['ID'];?>' id='service-<?=$arElement['ID'];?>' data-price="<?=(int)$price;?>">
+								<label class='label_choice-goods' for='service-<?=$arElement['ID'];?>'></label>
+							</div>
+						</div>
+
+					<div class="clear"></div>
+				</div>
+			</div>
+
+		<?php endforeach; ?>
+		</div>
 	</div>
 </div>

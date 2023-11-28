@@ -12,6 +12,7 @@
 
 .wrapperCalcul .container-products .inner-box-products {
 	width: 100%;
+	margin-bottom: 23px;
 }
 
 .wrapperCalcul .container-products .boxHeading {
@@ -42,9 +43,19 @@
 	word-wrap: break-word;
 }
 
+.wrapperCalcul .container-products .headingChoice_serv {
+	color: #572529b3;
+}
+
 .wrapperCalcul .container-products 
 .inner-box-products .item-product {
 	height: 345px;
+}
+
+.wrapperCalcul .container-products 
+.inner-box-products .item-product_tires {
+	border-color: #572529b3;
+	outline-color: rgba(87, 38, 42, 0.3);
 }
 
 .wrapperCalcul .container-products nav {

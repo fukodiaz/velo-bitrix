@@ -55,6 +55,9 @@ foreach($arParams["FIELD_CODE_SERV"] as $key=>$val)
 if(empty($arParams["SECTION_CODE_SERV"]))
 	$arParams["SECTION_CODE_SERV"] = [];
 
+if(empty($arParams["TITLE_SERV"]))
+	$arParams["TITLE_SERV"] = '';
+
 
 $arNavigation = CDBResult::GetNavParams($arParams['PAGEN_PAGES']);
 
