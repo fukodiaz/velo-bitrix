@@ -17,9 +17,11 @@ $mobileColumns = $this->arParams['COLUMNS_LIST_MOBILE'] ?? $this->arParams['COLU
 $mobileColumns = array_fill_keys($mobileColumns, true);
 
 $result['BASKET_ITEM_RENDER_DATA'] = array();
+// debug($this->basketItems);
 
 foreach ($this->basketItems as $row)
 {
+	// debug($row);
 	$rowData = array(
 		'ID' => $row['ID'],
 		'PRODUCT_ID' => $row['PRODUCT_ID'],
@@ -99,6 +101,9 @@ foreach ($this->basketItems as $row)
 		$hideDetailPicture = true;
 		$rowData['IMAGE_URL'] = $row['DETAIL_PICTURE_SRC'];
 	}
+
+	//adding custom preview_picture
+	
 
 	if (!empty($row['SKU_DATA']))
 	{
@@ -230,7 +235,7 @@ foreach ($this->basketItems as $row)
 			if ($value['id'] === 'DETAIL_PICTURE')
 			{
 				$value['name'] = Loc::getMessage('SBB_DETAIL_PICTURE_NAME');
-
+		
 				if (!empty($row['DETAIL_PICTURE_SRC']))
 				{
 					$rowData['COLUMN_LIST'][] = array(

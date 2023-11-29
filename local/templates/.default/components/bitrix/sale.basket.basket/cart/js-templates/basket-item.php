@@ -7,7 +7,7 @@ use Bitrix\Main\Localization\Loc;
  * @var array $arParams
  * @var string $templateFolder
  */
-
+// debug($arParams);
 $usePriceInAdditionalColumn = in_array('PRICE', $arParams['COLUMNS_LIST']) && $arParams['PRICE_DISPLAY_MODE'] === 'Y';
 $useSumColumn = in_array('SUM', $arParams['COLUMNS_LIST']);
 $useActionColumn = in_array('DELETE', $arParams['COLUMNS_LIST']);

@@ -18,6 +18,7 @@ use Bitrix\Main\Localization\Loc;
 
 $documentRoot = Main\Application::getDocumentRoot();
 // echo $arResult['EMPtY_BASKET'] . '=empty' . ' ' . $arResult['ERROR_MESSAGE'];
+// debug($arResult);
 
 if (empty($arParams['TEMPLATE_THEME']))
 {

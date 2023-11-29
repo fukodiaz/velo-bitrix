@@ -77,7 +77,8 @@
 								<?endif;?>
 							</div>
 							<div class='boxChoice'>
-								<input class='input_choice-goods visually-hidden' type='radio' name='goods' value='<?=$arElement['ID'];?>' id='goods-<?=$arElement['ID'];?>' data-price="<?=(int)$price;?>">
+								<input class='input_choice-goods visually-hidden' type='radio' name='goods' value='<?=$arElement['ID'];?>' id='goods-<?=$arElement['ID'];?>' data-price="<?=(int)$price;?>"
+								data-name='<?=$arElement["NAME"]?>' data-pdu='<?=$arElement["DETAIL_PAGE_URL"]?>' data-img='<?=$arElement["PREVIEW_PICTURE"]["SRC"]?>'>
 								<label class='label_choice-goods' for='goods-<?=$arElement['ID'];?>'></label>
 							</div>
 						</div>
@@ -185,5 +186,6 @@
 				</div>
 			<?endforeach;?>
 		</div>
+		<button type='button' class='addModifiedItem'>Добавить в корзину</button>
 	</div>
 </div>
