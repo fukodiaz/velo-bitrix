@@ -103,7 +103,15 @@ foreach ($this->basketItems as $row)
 	}
 
 	//adding custom preview_picture
-	
+	if (empty($row['PREVIEW_PICTURE_SRC'])) {
+		if (!empty($row['PROPS'])) {
+			foreach($row['PROPS'] as $prop) {
+				if (!empty($prop['CODE'])) {
+					$rowData['IMAGE_URL'] = $prop['VALUE'];
+				}
+			}
+		}
+	}
 
 	if (!empty($row['SKU_DATA']))
 	{
