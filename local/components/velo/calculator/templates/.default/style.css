@@ -187,6 +187,31 @@
 	padding-left: 6px;
 }
 
+.boxBtnModifToBasket {
+	box-sizing: border-box;
+	padding-top: 12px;
+	padding-bottom: 20px; 
+}
+
+.addModifiedItem {
+	position: relative;
+	top: -30px;
+	left: 40px;
+	box-sizing: border-box;
+	padding: 7px 18px;
+	/* height: 35px; */
+	font-size: 17px;
+	color: #fff;
+	border: 2px solid rgba(253, 89, 71, 0.6);
+	outline: unset;
+	border-radius: 7px;
+	background-color: rgba(253, 89, 71, 0.9);
+}
+
+.addModifiedItem:hover {
+	background-color: rgba(253, 89, 71, 0.7);
+}
+
 .grid_img{
     height: 190px;
 }

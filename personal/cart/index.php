@@ -99,8 +99,7 @@ $APPLICATION->SetTitle("Корзина");
 		"PRODUCT_COLUMNS_HIDDEN" => array(
 		),
 		"PRODUCT_COLUMNS_VISIBLE" => array(
-			0 => "PREVIEW_PICTURE",
-			1 => "PROPS",
+			0 => "PRICE_FORMATED",
 		),
 		"PROPS_FADE_LIST_1" => array(
 		),

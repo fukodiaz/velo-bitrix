@@ -186,6 +186,8 @@
 				</div>
 			<?endforeach;?>
 		</div>
-		<button type='button' class='addModifiedItem'>Добавить в корзину</button>
+		<div class='boxBtnModifToBasket'>
+			<button type='button' class='addModifiedItem'>Добавить в корзину</button>
+		</div>
 	</div>
 </div>

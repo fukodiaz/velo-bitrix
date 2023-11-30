@@ -12,20 +12,20 @@ $(function() {
 		nameGoods = $(this).data('name');
 		pdu = $(this).data('pdu');
 		img = $(this).data('img');
-		console.log(`priceVelo: ${priceGoods}; id: ${this.value}`);
-		console.log(`Final sum: ${+priceGoods + +priceTires + +priceCover};`);
-		console.log(`PDU: ${pdu}`);
-		console.log(`name: ${nameGoods}`);
+		// console.log(`priceVelo: ${priceGoods}; id: ${this.value}`);
+		// console.log(`Final sum: ${+priceGoods + +priceTires + +priceCover};`);
+		// console.log(`PDU: ${pdu}`);
+		// console.log(`name: ${nameGoods}`);
 	});
 	$('input[type=radio][name=service_tires]').change(function() {
 		priceTires = $(this).data('price'); 
-		console.log(`priceTires: ${priceTires}; id: ${this.value}`);
-		console.log(`Final sum: ${+priceGoods + +priceTires + +priceCover};`);
+		// console.log(`priceTires: ${priceTires}; id: ${this.value}`);
+		// console.log(`Final sum: ${+priceGoods + +priceTires + +priceCover};`);
 	});
 	$('input[type=radio][name=covering]').change(function() {
 		priceCover = $(this).data('price');
-		console.log(`priceCovering: ${priceCover}; id: ${this.value}`);
-		console.log(`Final sum: ${+priceGoods + +priceTires + +priceCover};`);
+		// console.log(`priceCovering: ${priceCover}; id: ${this.value}`);
+		// console.log(`Final sum: ${+priceGoods + +priceTires + +priceCover};`);
 	});
 
 	function addModifiedItem(name, price, pdu, img) {
